@@ -1,0 +1,39 @@
+name: E2E Tests - Orange.fr
+
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+    branches: [main]
+  workflow_call:
+    outputs:
+      result:
+        description: 'Résultat des tests (success | failure)'
+        value: ${{ jobs.e2e.outputs.result }}
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set-result.outputs.result }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: e2e-callable/package-lock.json
+
+      - name: Run Cypress E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: e2e-callable
+
+      - name: Set result output
+        id: set-result
+        if: always()
+        run: echo "result=${{ job.status }}" >> $GITHUB_OUTPUT

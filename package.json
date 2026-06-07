@@ -1,0 +1,16 @@
+{
+  "name": "e2e-callable",
+  "version": "1.0.0",
+  "description": "Cypress e2e tests for orange.fr, callable by other projects",
+  "main": "run.js",
+  "scripts": {
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "test:headed": "cypress run --headed",
+    "start": "node run.js"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0",
+    "typescript": "~5.2.0"
+  }
+}
